@@ -12,8 +12,9 @@ public class MyPageUserService {
 
     private final MyPageUserMapper myPageUserMapper;
 
-    public boolean checkId(int id,String userId) {
-        User user = myPageUserMapper.findById(id);
+    public boolean checkId(String userId) {
+        System.out.println("is it error??"+userId);
+        User user = myPageUserMapper.findById(userId);
 
         if (user == null) {
             return false;
@@ -24,7 +25,7 @@ public class MyPageUserService {
 
 
     public void newUpdateNickname(int id, String newNickname) {
-        User user = myPageUserMapper.findById(id);
+        User user = myPageUserMapper.updateNicknameById();
         if (user == null) {
             throw new IllegalArgumentException("User not found");
         }

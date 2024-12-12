@@ -30,7 +30,7 @@ public class MyPageController {
     @PostMapping("/user/check-before-update")
     public ResponseEntity<Void> checkBeforeUpdate(@RequestBody CheckUserIdDTO checkUserIdDTO) {
 
-        boolean isValid = myPageUserService.checkId(checkUserIdDTO.getId(),checkUserIdDTO.getUserId());
+        boolean isValid = myPageUserService.checkId(checkUserIdDTO.getUserId());
         if (isValid) {
             return ResponseEntity.ok().build();  //아이디 맞으면 ok
         } else {
@@ -39,10 +39,10 @@ public class MyPageController {
     }
 
 
-//    @PatchMapping("/user/update-nickname")
-//    public ResponseEntity<String> updateNickname(@RequestBody UpdateNicknameDTO updateNicknameDTO) {
-//        myPageUserService.newUpdateNickname(updateNicknameDTO.getId(), updateNicknameDTO.getNickname());
-//        return ResponseEntity.ok("닉네임이 성공적으로 변경되었습니다.");
-//    }
+    @PatchMapping("/user/nicknameUpdate")
+    public ResponseEntity<String> updateNickname(@RequestBody UpdateNicknameDTO updateNicknameDTO) {
+        myPageUserService.newUpdateNicknam(updateNicknameDTO.getId(), updateNicknameDTO.getNickname());
+        return ResponseEntity.ok("닉네임이 성공적으로 변경되었습니다.");
+    }
 
 }

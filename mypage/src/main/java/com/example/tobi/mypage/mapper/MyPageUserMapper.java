@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MyPageUserMapper {
-    User findById(@Param("id") int id);
+    User findById(@Param("userId") String userId);
     void updateNicknameById(
             @Param("id") int id, @Param("newNickname") String newNickname);
 }

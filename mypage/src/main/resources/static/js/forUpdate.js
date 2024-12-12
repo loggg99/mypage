@@ -4,30 +4,41 @@ function idForUpdate() {
 }
 
 
-function checkId() {
-    const id = document.getElementById('id').value;
-    const userId = document.getElementById('userId').value;
+// DOMContentLoaded 이벤트를 사용하여 DOM이 완전히 로드된 후 실행
+document.addEventListener('DOMContentLoaded', () => {
+    window.checkId = function () {
+        const userIdElement = document.getElementById('userId');
 
-    if (!id || !userId) {
-        alert('아이디와 사용자 아이디를 입력해 주세요.');
-        return;
-    }
-
-    // 아이디확인
-    $.ajax({
-        type: 'POST',
-        url: '/user/check-before-update',
-        data: JSON.stringify({ id: id, userId: userId }),  // 서버에 아이디 전송
-        contentType: 'application/json',
-        success: function() {
-            // 비밀번호 확인이 성공하면 닉네임 수정 페이지로 이동
-            window.location.href = '/user/nicknameUpdate';
-        },
-        error: function(error) {
-            alert('아이디가 올바르지 않습니다. 다시 시도해 주세요.');
+        // DOM 요소가 존재하는지 확인
+        if (!userIdElement) {
+            alert('아이디 입력 필드가 없습니다.');
+            return;
         }
-    });
-}
+
+        const userId = userIdElement.value;
+
+        if (!userId) {
+            alert('아이디를 입력해 주세요.');
+            return;
+        }
+
+        // AJAX 요청
+        $.ajax({
+            type: 'POST',
+            url: '/user/check-before-update',
+            data: JSON.stringify({ userId: userId }),
+            contentType: 'application/json',
+            success: function () {
+                window.location.href = '/user/nicknameUpdate';
+            },
+            error: function () {
+                alert('아이디가 올바르지 않습니다. 다시 시도해 주세요.');
+            }
+        });
+    };
+});
+
+
 
 
 function updateNickname() {
