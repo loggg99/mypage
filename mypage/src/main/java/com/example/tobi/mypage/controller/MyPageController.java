@@ -7,42 +7,40 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-@Controller
-//@RequestMapping("/")
+@RestController
+@RequestMapping("/user")
+@CrossOrigin(origins = "http://localhost:7007")  // 프론트가 실행되는 주소와 포트를 명시
 @RequiredArgsConstructor
 public class MyPageController {
 
     private final MyPageUserService myPageUserService;
 
-    @GetMapping("/")
-    public String myPage() { return "mypage";
+
+
+
+    @PostMapping("/check-id")
+    public Boolean checkUserId(@RequestBody CheckUserIdDTO checkUserIdDTO) {
+
+        return myPageUserService.checkId(checkUserIdDTO.getUserId());  // 아이디 틀리면 401 응답
+
     }
 
-    @GetMapping("/user/idForUpdate")
-    public String idForUpdate() {
-        return "idForUpdate";
-    }
-
-
-    @PostMapping("/user/check-before-update")
-    public ResponseEntity<Void> checkBeforeUpdate(@RequestBody CheckUserIdDTO checkUserIdDTO) {
-
-        boolean isValid = myPageUserService.checkId(checkUserIdDTO.getUserId());
-        if (isValid) {
-            return ResponseEntity.ok().build();  //아이디 맞으면 ok
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();  // 아이디 틀리면 401 응답
-       }
+    @GetMapping("/{userId}/nickname")
+    public ResponseEntity<String> getNickname(@PathVariable String userId) {
+        String nickname = myPageUserService.getNicknameByUserId(userId);
+        return ResponseEntity.ok(nickname);
     }
 
 
-    @PatchMapping("/user/nicknameUpdate")
-    public ResponseEntity<String> updateNickname(@RequestBody UpdateNicknameDTO updateNicknameDTO) {
-        myPageUserService.newUpdateNicknam(updateNicknameDTO.getId(), updateNicknameDTO.getNickname());
-        return ResponseEntity.ok("닉네임이 성공적으로 변경되었습니다.");
+    @PatchMapping("/update-nickname")  // 닉네임 업데이트 API
+    public void updateNickname(@RequestBody UpdateNicknameDTO updateNicknameDTO) {
+        myPageUserService.updateNickname(updateNicknameDTO.getUserId(), updateNicknameDTO.getNickname());  // 닉네임 변경
     }
+
+
 
 }

@@ -29,7 +29,19 @@ document.addEventListener('DOMContentLoaded', () => {
             data: JSON.stringify({ userId: userId }),
             contentType: 'application/json',
             success: function () {
-                window.location.href = '/user/nicknameUpdate';
+                // 서버가 응답을 성공적으로 반환하면 폼 생성 후 전송
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/user/nicknameUpdate';
+
+                const hiddenInput = document.createElement('input');
+                hiddenInput.type = 'hidden';
+                hiddenInput.name = 'userId';
+                hiddenInput.value = userId;
+
+                form.appendChild(hiddenInput);
+                document.body.appendChild(form);
+                form.submit();
             },
             error: function () {
                 alert('아이디가 올바르지 않습니다. 다시 시도해 주세요.');
@@ -43,6 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function updateNickname() {
     const newNickname = document.getElementById('new-nickname').value;
+    const userId = document.getElementById('user-id').value;  //
 
     if (!newNickname) {
         alert('새 닉네임을 입력해 주세요.');
@@ -53,6 +66,7 @@ function updateNickname() {
         type: 'PATCH',
         url: '/user/update-nickname',
         data: JSON.stringify({
+            userId: userId,
             newNickname: newNickname
         }),
         contentType: 'application/json',

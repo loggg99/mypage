@@ -9,6 +9,8 @@
         SELECT * FROM user WHERE user_id = #{userId}
     </select>
 
+
+
     <update id="updateNicknameById">
         UPDATE user
         SET nickname = #{newNickname}
